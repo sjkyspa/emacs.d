@@ -120,6 +120,7 @@
 (require 'init-clojure)
 (require 'init-clojure-cider)
 (require 'init-common-lisp)
+(require-package 'solidity-mode)
 
 (when *spell-check-support-enabled*
   (require 'init-spelling))
@@ -135,6 +136,7 @@
 ;; Extra packages which don't require any configuration
 
 (require-package 'gnuplot)
+(require-package 'plantuml-mode)
 (require-package 'lua-mode)
 (require-package 'htmlize)
 (require-package 'dsvn)

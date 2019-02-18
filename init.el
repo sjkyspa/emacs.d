@@ -180,6 +180,7 @@
 (require 'init-local nil t)
 
 (require 'init-im)
+(require 'init-local)
 
 (provide 'init)
 

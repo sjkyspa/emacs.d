@@ -10,5 +10,23 @@
 
 (setq markdown-command "jq --slurp --raw-input '{\"text\": \"\\(.)\", \"mode\": \"gfm\"}' | curl -sS --data @- https://api.github.com/markdown")
 
+(setq-default org-agenda-dir "/datas/nuts/1si/orgs/agendas")
+(setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
+(setq org-agenda-file-gtd (expand-file-name "todos.org" org-agenda-dir))
+(setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
+(setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
+(setq org-default-notes-file (expand-file-name "notes.org" org-agenda-dir))
+(setq org-agenda-files (list org-agenda-dir))
+(setq org-latex-compiler "xelatex")
+(setq org-confirm-babel-evaluate nil)
+
+(add-hook 'org-clock-in-hook
+          (lambda ()  (shell-command (concat "curl -X POST -d '{\"type\": \"FOCUS\", \"title\": \"" org-clock-current-task "\"}' "
+                                        "127.0.0.1:13140"))))
+(add-hook 'org-clock-out-hook
+          (lambda ()  (shell-command (concat "curl -X POST -d '{\"type\": \"UNFOCUS\", \"title\": \"" org-clock-current-task "\"}' "
+                                        "127.0.0.1:13140"))))
+
+
 (provide 'init-local)
 ;;; init-local.el ends here

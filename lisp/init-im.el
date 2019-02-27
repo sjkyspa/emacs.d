@@ -35,11 +35,23 @@
   (pyim-basedict-enable)
 
   (after-load 'pyim
-    (setq-default default-input-method "pyim")
     (setq-default pyim-default-scheme 'quanpin)
-    (setq-default pyim-page-length 8)
+    (setq-default pyim-page-length 5)
     (pyim-isearch-mode 1)
     (setq pyim-page-tooltip 'posframe)
+    (setq-default pyim-english-input-switch-functions
+                  '(pyim-probe-dynamic-english
+                    pyim-probe-isearch-mode
+                    pyim-probe-program-mode
+                    pyim-probe-org-structure-template))
+    (setq-default pyim-punctuation-half-width-functions
+                  '(pyim-probe-punctuation-line-beginning
+                    pyim-probe-punctuation-after-punctuation))
+    (setq default-input-method "pyim")
+    (global-set-key (kbd "C-\\") 'toggle-input-method)
+    (global-set-key (kbd "M-j") 'pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
+    (global-set-key (kbd "M-f") 'pyim-forward-word)
+    (global-set-key (kbd "M-b") 'pyim-backward-word)
     )
 
 

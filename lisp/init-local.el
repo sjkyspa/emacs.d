@@ -21,11 +21,27 @@
 (setq org-confirm-babel-evaluate nil)
 
 (add-hook 'org-clock-in-hook
-          (lambda ()  (shell-command (concat "curl -X POST -d '{\"type\": \"FOCUS\", \"title\": \"" org-clock-current-task "\"}' "
+          (lambda ()  (shell-command (concat "curl -X POST -d '{"
+                                        "\"type\": \"FOCUSED\", "
+                                        "\"title\": \"" org-clock-current-task "\""
+                                        "}' "
                                         "127.0.0.1:13140"))))
-(add-hook 'org-clock-out-hook
-          (lambda ()  (shell-command (concat "curl -X POST -d '{\"type\": \"UNFOCUS\", \"title\": \"" org-clock-current-task "\"}' "
+(add-hook 'org-pomodoro-finished-hook
+          (lambda ()  (shell-command (concat "curl -X POST -d '{"
+                                        "\"type\": \"UNFOCUSED\", "
+                                        "\"title\": \"" org-clock-current-task "\","
+                                        "\"duration\": \"" (format "%s" (cond ((equal :short-break org-pomodoro-state) org-pomodoro-short-break-length)
+                                                                              ((equal :long-break org-pomodoro-state) org-pomodoro-long-break-length))) "\""
+                                        "}' "
                                         "127.0.0.1:13140"))))
+
+(add-hook 'org-pomodoro-break-finished-hook
+          (lambda ()  (shell-command (concat "curl -X POST -d '{"
+                                        "\"type\": \"FOCUS\", "
+                                        "\"title\": \"" org-clock-current-task "\""
+                                        "}' "
+                                        "127.0.0.1:13140"))))
+
 
 
 (provide 'init-local)

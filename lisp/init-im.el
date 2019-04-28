@@ -30,7 +30,7 @@
 (add-hook 'emacs-startup-hook #'(lambda () (pyim-restart)))
 
 (setq rime_share_data_dir (expand-file-name "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"))
-(setq rime_user_data_dir (expand-file-name "~/.emacs.d/rime"))
+(setq rime_user_data_dir (expand-file-name "~/Library/Rime"))
 (add-to-list 'load-path "~/.emacs.d/libeirme/build")
 (load "~/.emacs.d/liberime/build/liberime.so")
 

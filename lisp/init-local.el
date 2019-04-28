@@ -3,13 +3,13 @@
 ;;; Code:
 
 ;;; local
-(setq-default make-backup-files nil)
-(setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backups"))))
-(setq auto-save-file-name-transforms
-      `((".*" ,(concat user-emacs-directory "backups") t)))
-(setq auto-save-list-file-prefix
-      (concat user-emacs-directory "backups"))
+(setq backup-by-copying t)
+(setq make-backup-files t)
+(defvar backup-dir (expand-file-name "~/.emacs.d/backups/"))
+(defvar autosave-dir (expand-file-name "~/.emacs.d/autosaves/"))
+(setq backup-directory-alist (list (cons ".*" backup-dir)))
+(setq auto-save-list-file-prefix autosave-dir)
+(setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
 
 (after-load 'projectile
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))

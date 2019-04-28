@@ -1,0 +1,6 @@
+[submodule "librime"]
+	path = librime
+	url = https://github.com/rime/librime.git
+[submodule "liberime"]
+	path = liberime
+	url = https://gitlab.com/liberime/liberime.git

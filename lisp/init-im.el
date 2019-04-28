@@ -7,10 +7,9 @@
 (require-package 'pyim)
 (require-package 'pyim-basedict)
 (require-package 'posframe)
-
+(require 'pyim)
 (after-load 'pyim
   (pyim-basedict-enable)
-  (setq-default pyim-default-scheme 'quanpin)
   (setq-default pyim-page-length 5)
   (pyim-isearch-mode 1)
   (setq pyim-page-tooltip 'posframe)
@@ -30,24 +29,21 @@
 
 (add-hook 'emacs-startup-hook #'(lambda () (pyim-restart)))
 
-
-
-(setq rime_share_data_dir "/Library/Input Methods/Squirrel.app/Contents/SharedSupport")
-(setq rime_user_data_dir "/Users/morpheus/Library/Rime")
-(add-to-list 'load-path "/Users/morpheus/.oh-my-env/06-emacs.d/liberime/build")
-(load "/Users/morpheus/.oh-my-env/06-emacs.d/liberime/build/liberime.so")
+(setq rime_share_data_dir (expand-file-name "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"))
+(setq rime_user_data_dir (expand-file-name "~/.emacs.d/rime"))
+(add-to-list 'load-path "~/.emacs.d/libeirme/build")
+(load "~/.emacs.d/liberime/build/liberime.so")
 
 (require 'liberime)
 (defun setup-liberime()
-  ;; incase hooks not running
+  ;;; incase hooks not running
   (interactive)
   (liberime-start rime_share_data_dir rime_user_data_dir)
   (liberime-select-schema "luna_pinyin_simp")
-  (setq pyim-default-scheme 'rime)
+  (setq pyim-default-scheme 'rime-quanpin)
   )
 ;; work with pyim
 (add-hook 'pyim-load-hook 'setup-liberime) ;; or set with use-package
-
 
 (provide 'init-im)
 ;;; init-im.el ends here

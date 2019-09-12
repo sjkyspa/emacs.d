@@ -11,9 +11,6 @@
 (setq auto-save-list-file-prefix autosave-dir)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
 
-(after-load 'projectile
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))
-
 (setq markdown-command "jq --slurp --raw-input '{\"text\": \"\\(.)\", \"mode\": \"gfm\"}' | curl -sS --data @- https://api.github.com/markdown")
 
 (after-load 'org-agenda
@@ -28,14 +25,12 @@
 
 ;;; use xelatex as latex compiler
 (setq org-latex-compiler "xelatex")
-;;; default eval the code snip without confirm
-(setq org-confirm-babel-evaluate nil)
 
 (add-hook 'org-clock-in-hook
           (lambda ()  (shell-command (concat "curl -s -X POST -d '{"
                                         "\"type\": \"FOCUSED\", "
                                         "\"title\": \"" org-clock-current-task "\","
-                                        "\"duration\": \"25\""
+                                        "\"duration\": \"45\""
 
                                         "}' "
                                         "127.0.0.1:13140"))))
@@ -65,12 +60,18 @@
 (setq-default org-agenda-skip-scheduled-if-done t)
 
 
-(setq org-capture-templates
-      `(("t" "todo" entry (file "")  ; "" => `org-default-notes-file'
-         "* NEXT %?\n%U\n" :clock-resume t)
-        ("n" "note" entry (file "")
-         "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
-        ))
+(add-to-list 'org-capture-templates
+             '("t" "todo" entry (file "")  ; "" => `org-default-notes-file'
+               "* NEXT %?\n%U\n" :clock-resume t))
+
+(add-to-list 'org-capture-templates
+             '("n" "note" entry (file "")
+               "* %? :NOTE:\n%U\n%a\n" :clock-resume t))
+
+(add-to-list 'org-capture-templates
+             '("r" "retro" plain (file+olp+datetree "/datas/nuts/1si/orgs/notes/retrospect.org")
+               "%[/datas/nuts/1si/orgs/templates/retrospect.org]" :tree-type week))
+
 
 (setq org-agenda-custom-commands
       `(("N" "Notes" tags "NOTE"
@@ -190,6 +191,15 @@ directory to make multiple eshell windows easier."
 (defun eshell/gst (&rest args)
   (magit-status (pop args) nil)
   (eshell/echo))   ;; The echo command suppresses output
+
+(advice-add 'org-deadline       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+(advice-add 'org-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+(advice-add 'org-store-log-note :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+(advice-add 'org-todo           :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+
+(require 'init-usepackage)
+(require 'init-lspmode)
+(require 'init-cn)
 
 (provide 'init-local)
 ;;; init-local.el ends here

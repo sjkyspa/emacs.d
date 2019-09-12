@@ -1,8 +1,17 @@
-;;; init-im.el --- Work with input method configurations -*- lexical-binding: t -*-
+;;; init-cn.el --- work with chinese configurations -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
-;;; im
+;;; cn
+
+(use-package cnfonts
+  :ensure t
+  :if (display-graphic-p)
+  :init (setq cnfonts-verbose nil)
+  :config
+  (setq cnfonts-use-face-font-rescale t)
+  (cnfonts-enable))
+
 
 (require-package 'pyim)
 (require-package 'pyim-basedict)
@@ -30,7 +39,7 @@
 (add-hook 'emacs-startup-hook #'(lambda () (pyim-restart)))
 
 (setq rime_share_data_dir (expand-file-name "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"))
-(setq rime_user_data_dir (expand-file-name "~/Library/Rime"))
+(setq rime_user_data_dir (expand-file-name "~/.emacs.d/rime"))
 (add-to-list 'load-path "~/.emacs.d/libeirme/build")
 (load "~/.emacs.d/liberime/build/liberime.so")
 
@@ -45,5 +54,5 @@
 ;; work with pyim
 (add-hook 'pyim-load-hook 'setup-liberime) ;; or set with use-package
 
-(provide 'init-im)
-;;; init-im.el ends here
+(provide 'init-cn)
+;;; init-cn.el ends here

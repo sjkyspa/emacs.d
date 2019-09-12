@@ -179,8 +179,6 @@
 ;;----------------------------------------------------------------------------
 (require 'init-local nil t)
 
-(require 'init-im)
-
 (provide 'init)
 
 ;; Local Variables:

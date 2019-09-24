@@ -10,21 +10,19 @@
   (company-lsp-enable-snippet t)
   (company-lsp-enable-recompletion t))
 
-(use-package ccls
-  :custom
-  (ccls-executable "/usr/local/bin/ccls")
-  (ccls-sem-highlight-method 'font-lock)
-  :config
-  :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (require 'ccls) (lsp))))
-
 (use-package yasnippet
   :ensure t
   :diminish yas-minor-mode
   :custom (yas-snippet-dirs '("~/.emacs.d/snippets"))
   :hook (after-init . yas-global-mode))
 
+(use-package yasnippet-snippets
+  :ensure t
+  :requires yasnippet)
+
+
 (use-package lsp-mode
+  :ensure t
   :custom
   ;; debug
   (lsp-print-io nil)
@@ -37,15 +35,20 @@
   (lsp-prefer-flymake t) ;; t(flymake), nil(lsp-ui), or :none
   ;; go-client
   (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
+  (lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
   :hook
-  ((go-mode c-mode c++-mode) . lsp)
+  (prog-mode . lsp-deferred)
   :bind
   (:map lsp-mode-map
         ("C-c r"   . lsp-rename))
   :config
-  (require 'lsp-clients)
+  (use-package lsp-treemacs
+    :ensure t
+    :commands lsp-treemacs-errors-list
+    )
   ;; LSP UI tools
   (use-package lsp-ui
+    :ensure t
     :custom
     ;; lsp-ui-doc
     (lsp-ui-doc-enable nil)

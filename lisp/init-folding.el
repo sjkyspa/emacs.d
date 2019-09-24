@@ -2,11 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
-(when (maybe-require-package 'origami)
-  (after-load 'origami
-    (define-key origami-mode-map (kbd "C-c f") 'origami-recursively-toggle-node)
-    (define-key origami-mode-map (kbd "C-c F") 'origami-toggle-all-nodes)))
-
+(use-package origami
+  :ensure t
+  :bind (("C-c f" . origami-recursively-toggle-node)
+         ("C-c F" . origami-toggle-all-nodes))
+  :hook (after-init . global-origami-mode))
 
 (provide 'init-folding)
 ;;; init-folding.el ends here
